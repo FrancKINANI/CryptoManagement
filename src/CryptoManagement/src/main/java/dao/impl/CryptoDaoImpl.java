@@ -10,18 +10,18 @@ import java.util.List;
 import CryptoManagement.src.main.java.dao.interfaces.CryptoDao;
 import CryptoManagement.src.main.java.models.Crypto;
 
-public class CryptoDaoImpl implements CryptoDao {
+public class CryptoDAOImpl implements CryptoDao {
 	// Database connection
 	private final Connection connection;
 	
 	// Constructor
-	public CryptoDaoImpl(Connection connection) {
+	public CryptoDAOImpl(Connection connection) {
 		this.connection = connection;
 	}
 	
 	@Override
 	public void createCrypto(Crypto crypto) throws SQLException {
-		String sql = "INSERT INTO cryptos (symbol, name) VALUES (?, ?)";
+		String sql = "INSERT INTO cryptocurrencies (symbol, name) VALUES (?, ?)";
 		try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, crypto.getSymbol());
 			stmt.setString(2, crypto.getName());
@@ -37,7 +37,7 @@ public class CryptoDaoImpl implements CryptoDao {
 
 	@Override
 	public Crypto getCryptoById(int id) throws SQLException {
-		String sql = "SELECT * FROM cryptos WHERE id = ?";
+		String sql = "SELECT * FROM cryptocurrencies WHERE id = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setInt(1, id);
 			try (ResultSet rs = stmt.executeQuery()) {
@@ -55,7 +55,7 @@ public class CryptoDaoImpl implements CryptoDao {
 
 	@Override
 	public Crypto getCryptoBySymbol(String symbol) throws SQLException {
-		String sql = "SELECT * FROM cryptos WHERE symbol = ?";
+		String sql = "SELECT * FROM cryptocurrencies WHERE symbol = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setString(1, symbol);
 			try (ResultSet rs = stmt.executeQuery()) {
@@ -73,7 +73,7 @@ public class CryptoDaoImpl implements CryptoDao {
 
 	@Override
 	public List<Crypto> getAllCryptos() throws SQLException {
-		String sql = "SELECT * FROM cryptos";
+		String sql = "SELECT * FROM cryptocurrencies";
 		try (PreparedStatement stmt = connection.prepareStatement(sql);
 				ResultSet rs = stmt.executeQuery()) {
 			List<Crypto> cryptos = new ArrayList<>();
@@ -90,7 +90,7 @@ public class CryptoDaoImpl implements CryptoDao {
 
 	@Override
 	public void updateCrypto(Crypto crypto) throws SQLException {
-		String sql = "UPDATE cryptos SET symbol = ?, name = ? WHERE id = ?";
+		String sql = "UPDATE cryptocurrencies SET symbol = ?, name = ? WHERE id = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, crypto.getSymbol());
 			stmt.setString(2, crypto.getName());
@@ -103,7 +103,7 @@ public class CryptoDaoImpl implements CryptoDao {
 
 	@Override
 	public void deleteCrypto(int id) throws SQLException {
-		String sql = "DELETE FROM cryptos WHERE id = ?";
+		String sql = "DELETE FROM cryptocurrencies WHERE id = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, id);
 			stmt.executeUpdate();

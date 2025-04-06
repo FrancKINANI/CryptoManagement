@@ -1,5 +1,6 @@
 package CryptoManagement.src.main.java.dao.interfaces;
 
+import CryptoManagement.src.main.java.models.Crypto;
 import java.sql.SQLException;
 import java.util.List;
 

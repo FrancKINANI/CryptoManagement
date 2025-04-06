@@ -12,10 +12,10 @@ import java.sql.Timestamp;
 import CryptoManagement.src.main.java.dao.interfaces.TransactionDao;
 import CryptoManagement.src.main.java.models.Transaction;
 
-public class TransactionDaoImpl implements TransactionDao {
+public class TransactionDAOImpl implements TransactionDao {
 	private final Connection connection;
 	
-	public TransactionDaoImpl(Connection connection) {
+	public TransactionDAOImpl(Connection connection) {
 		this.connection = connection;
 	}
 	
@@ -50,6 +50,7 @@ public class TransactionDaoImpl implements TransactionDao {
 					transaction.setId(rs.getInt("id"));
 					transaction.setWalletId(rs.getInt("wallet_id"));
 					transaction.setCryptoId(rs.getInt("crypto_id"));
+					transaction.setType(Transaction.TransactionType.valueOf(rs.getString("type")));
 					transaction.setQuantity(rs.getBigDecimal("quantity"));
 					transaction.setPricePerUnit(rs.getBigDecimal("price"));
 					transaction.setDate(rs.getTimestamp("date").toLocalDateTime());
@@ -72,6 +73,7 @@ public class TransactionDaoImpl implements TransactionDao {
 					transaction.setId(rs.getInt("id"));
 					transaction.setWalletId(rs.getInt("wallet_id"));
 					transaction.setCryptoId(rs.getInt("crypto_id"));
+					transaction.setType(Transaction.TransactionType.valueOf(rs.getString("type")));
 					transaction.setQuantity(rs.getBigDecimal("quantity"));
 					transaction.setPricePerUnit(rs.getBigDecimal("price"));
 					transaction.setDate(rs.getTimestamp("date").toLocalDateTime());
@@ -84,10 +86,11 @@ public class TransactionDaoImpl implements TransactionDao {
 
 	@Override
 	public void updateTransaction(Transaction transaction) throws SQLException {
-		String sql = "UPDATE transactions SET wallet_id = ?, crypto_id = ?, quantity = ?, price = ?, date = ? WHERE id = ?";
+		String sql = "UPDATE transactions SET wallet_id = ?, crypto_id = ?, type = ?, quantity = ?, price = ?, date = ? WHERE id = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, transaction.getWalletId());
 			stmt.setInt(2, transaction.getCryptoId());
+			stmt.setString(3, transaction.getType().name());
 			stmt.setBigDecimal(3, transaction.getQuantity());
 			stmt.setBigDecimal(4, transaction.getPricePerUnit());
 			stmt.setTimestamp(5, Timestamp.valueOf(transaction.getDate()));
@@ -116,6 +119,7 @@ public class TransactionDaoImpl implements TransactionDao {
 				transaction.setId(rs.getInt("id"));
 				transaction.setWalletId(rs.getInt("wallet_id"));
 				transaction.setCryptoId(rs.getInt("crypto_id"));
+				transaction.setType(Transaction.TransactionType.valueOf(rs.getString("type")));
 				transaction.setQuantity(rs.getBigDecimal("quantity"));
 				transaction.setPricePerUnit(rs.getBigDecimal("price"));
 				transaction.setDate(rs.getTimestamp("date").toLocalDateTime());
