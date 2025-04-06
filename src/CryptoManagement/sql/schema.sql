@@ -37,23 +37,3 @@ CREATE TABLE transactions (
     FOREIGN KEY (wallet_id) REFERENCES wallets(id),
     FOREIGN KEY (crypto_id) REFERENCES cryptocurrencies(id)
 );
-
-CREATE TABLE echanges (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-    source_wallet_id INT NOT NULL,
-    target_wallet_id INT NOT NULL,
-    source_crypto_id INT NOT NULL,
-    target_crypto_id INT NOT NULL,
-    status ENUM('COMPLETED', 'PENDING', 'FAILED'),
-    quantity DECIMAL(18, 8) NOT NULL,
-    tauxEchange DECIMAL(18, 8) NOT NULL, -- Taux de change entre les cryptomonnaies
-    source_price DECIMAL(18, 8) NOT NULL, -- Prix de la cryptomonnaie source
-    target_price DECIMAL(18, 8) NOT NULL, -- Prix de la cryptomonnaie cible
-    notes TEXT, -- Notes sur l'échange
-    price DECIMAL(18, 8) NOT NULL, -- Prix saisi manuellement
-    date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (source_wallet_id) REFERENCES wallets(id),
-    FOREIGN KEY (target_wallet_id) REFERENCES wallets(id),
-    FOREIGN KEY (source_crypto_id) REFERENCES cryptocurrencies(id),
-    FOREIGN KEY (target_crypto_id) REFERENCES cryptocurrencies(id)
-);
