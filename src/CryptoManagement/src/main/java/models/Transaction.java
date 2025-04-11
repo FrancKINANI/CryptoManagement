@@ -16,8 +16,10 @@ public class Transaction {
 
     public Transaction() {}
 
-    public Transaction(TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit) {
+    public Transaction(int wallet_id, int crypto_id, TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit) {
         this.date = LocalDateTime.now();
+        this.walletId = wallet_id;
+        this.cryptoId = crypto_id;
         this.type = type;
         this.quantity = quantity;
         this.pricePerUnit = pricePerUnit;

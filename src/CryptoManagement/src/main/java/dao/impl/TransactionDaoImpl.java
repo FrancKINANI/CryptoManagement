@@ -15,6 +15,7 @@ import CryptoManagement.src.main.java.models.Transaction;
 public class TransactionDAOImpl implements TransactionDao {
 	private final Connection connection;
 	
+	// Constructor
 	public TransactionDAOImpl(Connection connection) {
 		this.connection = connection;
 	}

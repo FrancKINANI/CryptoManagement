@@ -10,11 +10,12 @@ import java.util.List;
 
 public class WalletDAOImpl implements WalletDao {
     private final Connection connection;
-
+    
+    // Constructor
     public WalletDAOImpl(Connection connection) {
-        this.connection = connection;
-    }
-
+		this.connection = connection;
+	}
+    
     @Override
     public void createWallet(Wallet wallet) throws SQLException {
         String sql = "INSERT INTO wallets (name, user_id, total_value) VALUES (?, ?, ?)";

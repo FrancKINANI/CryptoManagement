@@ -9,10 +9,11 @@ import java.util.List;
 
 public class UserDAOImpl implements UserDao {
     private final Connection connection;
-
+    
+    // Constructor
     public UserDAOImpl(Connection connection) {
-        this.connection = connection;
-    }
+		this.connection = connection;
+	}
 
     @Override
     public void createUser(User user) throws SQLException {

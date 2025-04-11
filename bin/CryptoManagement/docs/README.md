@@ -94,22 +94,6 @@ class Crypto {
 }
 ```
 
-#### **Exchange**  
-```java
-class Wallet {
-    -id: int   
-    -date: LocalDate  
-    -sourceWalletId: int 
-    -targetWalletId: int  
-    -sourceCryptoId: int
-    -targetCryptoId: int
-    -sourceAmount: BigDecimal
-    -tagetAmount: BigDecimal
-    -notes: String
-    -status: enum { COMPLETED, PENDING, FAILED }  
-}
-```
-
 ### **Associations**  
 - **User** → **Wallet** (1..* → "possède")  
 - **Wallet** → **Transaction** (1..* → "contient")  
