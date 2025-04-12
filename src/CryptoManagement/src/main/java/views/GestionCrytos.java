@@ -31,6 +31,8 @@ public class GestionCrytos extends JFrame {
 	private JTextField SymbolField;
 	private JTextField NomField;
 	private JTable tableCrypto;
+	private JTextField QuantiteField;
+	private JTextField PrixField;
 	/**
 	 * Launch the application.
 	 */
@@ -56,7 +58,7 @@ public class GestionCrytos extends JFrame {
 		Connection connection = DatabaseConfig.getConnection();
 		setTitle("Gestion Cryptos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 853, 441);
+		setBounds(100, 100, 853, 613);
 		CryptoPanel = new JPanel();
 		CryptoPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -66,26 +68,38 @@ public class GestionCrytos extends JFrame {
 		JLabel symbolLabel = new JLabel("Symbole");
 		symbolLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		symbolLabel.setIcon(new ImageIcon("C:\\Users\\fkina\\eclipse-workspace\\EFM\\src\\CryptoManagement\\src\\main\\java\\icons\\Google-Noto-Emoji-People-Clothing-Objects-12157-anger-symbol.24.png"));
-		symbolLabel.setBounds(26, 61, 79, 33);
+		symbolLabel.setBounds(26, 32, 79, 33);
 		CryptoPanel.add(symbolLabel);
 		
 		JLabel NomLabel = new JLabel("Nom");
 		NomLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		NomLabel.setIcon(new ImageIcon("C:\\Users\\fkina\\eclipse-workspace\\EFM\\src\\CryptoManagement\\src\\main\\java\\icons\\Fatcow-Farm-Fresh-Define-name.24.png"));
-		NomLabel.setBounds(26, 133, 65, 33);
+		NomLabel.setBounds(26, 87, 65, 33);
 		CryptoPanel.add(NomLabel);
 		
+		JLabel QuantiteLabel = new JLabel("Quantité");
+		QuantiteLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		QuantiteLabel.setIcon(new ImageIcon("C:\\Users\\fkina\\eclipse-workspace\\EFM\\src\\CryptoManagement\\src\\main\\java\\icons\\Google-Noto-Emoji-People-Clothing-Objects-12157-anger-symbol.24.png"));
+		QuantiteLabel.setBounds(26, 144, 79, 33);
+		CryptoPanel.add(QuantiteLabel);
+		
+		JLabel PrixLabel = new JLabel("Prix");
+		PrixLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		PrixLabel.setIcon(new ImageIcon("C:\\Users\\fkina\\eclipse-workspace\\EFM\\src\\CryptoManagement\\src\\main\\java\\icons\\Google-Noto-Emoji-People-Clothing-Objects-12157-anger-symbol.24.png"));
+		PrixLabel.setBounds(26, 193, 79, 33);
+		CryptoPanel.add(PrixLabel);
+		
 		JLabel PrincipalLabel = new JLabel("Entrer les informations et faites un choix");
-		PrincipalLabel.setBounds(125, 25, 529, 13);
+		PrincipalLabel.setBounds(301, 10, 194, 13);
 		CryptoPanel.add(PrincipalLabel);
 		
 		SymbolField = new JTextField();
-		SymbolField.setBounds(138, 62, 96, 32);
+		SymbolField.setBounds(138, 33, 243, 26);
 		CryptoPanel.add(SymbolField);
 		SymbolField.setColumns(10);
 		
 		NomField = new JTextField();
-		NomField.setBounds(138, 133, 96, 26);
+		NomField.setBounds(138, 87, 243, 26);
 		CryptoPanel.add(NomField);
 		NomField.setColumns(10);
 		
@@ -93,12 +107,14 @@ public class GestionCrytos extends JFrame {
 		Addbtn.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		Addbtn.setHorizontalAlignment(SwingConstants.LEFT);
 		Addbtn.setIcon(new ImageIcon("C:\\Users\\fkina\\eclipse-workspace\\EFM\\src\\CryptoManagement\\src\\main\\java\\icons\\Custom-Icon-Design-Pretty-Office-2-Add-event.24.png"));
-		Addbtn.setBounds(365, 61, 108, 33);
+		Addbtn.setBounds(498, 32, 108, 33);
 		Addbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Crypto crypto = new Crypto();
 				crypto.setSymbol(SymbolField.getText());
 				crypto.setName(NomField.getText());
+				crypto.setQuantity(Integer.parseInt(QuantiteField.getText()));
+				crypto.setPrice(Double.parseDouble(PrixField.getText()));
 				CryptoDAOImpl cryptoDAO = new CryptoDAOImpl(connection);
 				
 				try {
@@ -135,7 +151,7 @@ public class GestionCrytos extends JFrame {
 				}
 			}
 		});
-		DeleteBtn.setBounds(365, 110, 108, 36);
+		DeleteBtn.setBounds(498, 111, 108, 36);
 		CryptoPanel.add(DeleteBtn);
 		
 		JButton UpdateBtn = new JButton("Update");
@@ -149,6 +165,8 @@ public class GestionCrytos extends JFrame {
 					crypto = cryptoDAO.getCryptoBySymbol(SymbolField.getText());
 					if (crypto != null) {
 						crypto.setName(NomField.getText());
+						crypto.setQuantity(Integer.parseInt(QuantiteField.getText()));
+						crypto.setPrice(Double.parseDouble(PrixField.getText()));
 						cryptoDAO.updateCrypto(crypto);
 						System.out.println("Crypto updated successfully: " + crypto);
 					} else {
@@ -159,7 +177,7 @@ public class GestionCrytos extends JFrame {
 				}
 			}
 		});
-		UpdateBtn.setBounds(498, 87, 108, 33);
+		UpdateBtn.setBounds(498, 208, 108, 33);
 		CryptoPanel.add(UpdateBtn);
 		
 		JButton RefreshBtn = new JButton("Refresh ");
@@ -170,13 +188,16 @@ public class GestionCrytos extends JFrame {
 				CryptoDAOImpl cryptoDAO = new CryptoDAOImpl(connection);
 				try {
 					java.util.List<Crypto> ListCryptos = cryptoDAO.getAllCryptos();
-					String[] columnNames = {"ID", "Symbol", "Name"};
-					Object[][] data = new Object[ListCryptos.size()][3];
+					String[] columnNames = {"ID", "Symbol", "Name", "Quantity", "Price", "Date"};
+					Object[][] data = new Object[ListCryptos.size()][6];
 					for (int i = 0; i < ListCryptos.size(); i++) {
 						Crypto crypto = ListCryptos.get(i);
 						data[i][0] = crypto.getId();
 						data[i][1] = crypto.getSymbol();
 						data[i][2] = crypto.getName();
+						data[i][3] = crypto.getQuantity();
+						data[i][4] = crypto.getPrice();
+						data[i][5] = crypto.getDatePrice();
 					}
 					tableCrypto.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
 					tableCrypto.setFillsViewportHeight(true);
@@ -186,11 +207,11 @@ public class GestionCrytos extends JFrame {
 				}
 			}
 		});
-		RefreshBtn.setBounds(641, 300, 135, 33);
+		RefreshBtn.setBounds(633, 454, 135, 33);
 		CryptoPanel.add(RefreshBtn);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(106, 236, 500, 158);
+		scrollPane.setBounds(106, 385, 500, 158);
 		CryptoPanel.add(scrollPane);
 		
 		tableCrypto = new JTable();
@@ -199,7 +220,17 @@ public class GestionCrytos extends JFrame {
 		JLabel lblNewLabel = new JLabel("Liste des cryptos");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\fkina\\eclipse-workspace\\EFM\\src\\CryptoManagement\\src\\main\\java\\icons\\Gartoon-Team-Gartoon-Apps-Gtodo-todo-list.24.png"));
-		lblNewLabel.setBounds(279, 193, 152, 33);
+		lblNewLabel.setBounds(272, 329, 152, 33);
 		CryptoPanel.add(lblNewLabel);
+		
+		QuantiteField = new JTextField();
+		QuantiteField.setColumns(10);
+		QuantiteField.setBounds(138, 151, 243, 26);
+		CryptoPanel.add(QuantiteField);
+		
+		PrixField = new JTextField();
+		PrixField.setColumns(10);
+		PrixField.setBounds(138, 200, 243, 26);
+		CryptoPanel.add(PrixField);
 	}
 }

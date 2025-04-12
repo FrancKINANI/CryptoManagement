@@ -79,9 +79,8 @@ CryptoManagement/
 ### **Tables Principales**  
 - **users** : `id, username, email, password_hash`  
 - **wallets** : `id, user_id, name, total_value`  
-- **cryptocurrencies** : `id, symbol, name` (référence statique)  
+- **cryptocurrencies** : `id, symbol, name, quantity, price` (référence statique)  
 - **transactions** : `id, wallet_id, crypto_id, type, quantity, price, date`  
-- **exchanges** : `id, source_wallet_id, target_wallet_id, source_crypto_id, target_crypto_id, amount, rate, date`  
 
 ---
 

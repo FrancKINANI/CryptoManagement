@@ -21,10 +21,13 @@ public class CryptoDAOImpl implements CryptoDao {
 	
 	@Override
 	public void createCrypto(Crypto crypto) throws SQLException {
-		String sql = "INSERT INTO cryptocurrencies (symbol, name) VALUES (?, ?)";
+		String sql = "INSERT INTO cryptocurrencies (symbol, name, quantity, price, date_price) VALUES (?, ?, ?, ?, ?)";
 		try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, crypto.getSymbol());
 			stmt.setString(2, crypto.getName());
+			stmt.setInt(3, crypto.getQuantity());
+			stmt.setDouble(4, crypto.getPrice());
+			stmt.setDate(5, new java.sql.Date(System.currentTimeMillis()));
 			stmt.executeUpdate();
 
 			try (ResultSet rs = stmt.getGeneratedKeys()) {
@@ -46,6 +49,9 @@ public class CryptoDAOImpl implements CryptoDao {
 					crypto.setId(rs.getInt("id"));
 					crypto.setSymbol(rs.getString("symbol"));
 					crypto.setName(rs.getString("name"));
+					crypto.setQuantity(rs.getInt("quantity"));
+					crypto.setPrice(rs.getDouble("price"));
+					crypto.setDatePrice(rs.getDate("date_price"));
 					return crypto;
 				}
 			}
@@ -64,6 +70,9 @@ public class CryptoDAOImpl implements CryptoDao {
 					crypto.setId(rs.getInt("id"));
 					crypto.setSymbol(rs.getString("symbol"));
 					crypto.setName(rs.getString("name"));
+					crypto.setQuantity(rs.getInt("quantity"));
+					crypto.setPrice(rs.getDouble("price"));
+					crypto.setDatePrice(rs.getDate("date_price"));
 					return crypto;
 				}
 			}
@@ -82,6 +91,9 @@ public class CryptoDAOImpl implements CryptoDao {
 				crypto.setId(rs.getInt("id"));
 				crypto.setSymbol(rs.getString("symbol"));
 				crypto.setName(rs.getString("name"));
+				crypto.setQuantity(rs.getInt("quantity"));
+				crypto.setPrice(rs.getDouble("price"));
+				crypto.setDatePrice(rs.getDate("date_price"));
 				cryptos.add(crypto);
 			}
 			return cryptos;
@@ -90,11 +102,14 @@ public class CryptoDAOImpl implements CryptoDao {
 
 	@Override
 	public void updateCrypto(Crypto crypto) throws SQLException {
-		String sql = "UPDATE cryptocurrencies SET symbol = ?, name = ? WHERE id = ?";
+		String sql = "UPDATE cryptocurrencies SET symbol = ?, name = ?, quantity = ?, price = ?, date_price = ? WHERE id = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, crypto.getSymbol());
 			stmt.setString(2, crypto.getName());
-			stmt.setInt(3, crypto.getId());
+			stmt.setInt(3, crypto.getQuantity());
+			stmt.setDouble(4, crypto.getPrice());
+			stmt.setDate(5, new java.sql.Date(System.currentTimeMillis()));
+			stmt.setInt(6, crypto.getId());
 			stmt.executeUpdate();
 		}catch (SQLException e) {
 			e.printStackTrace();

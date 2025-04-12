@@ -90,7 +90,9 @@ class Transaction {
 class Crypto {
     -id: int  
     -symbol: String  
-    -name: String  
+    -name: String 
+    -Quantity: int
+    -price: double 
 }
 ```
 
